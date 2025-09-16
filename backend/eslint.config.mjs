@@ -12,6 +12,7 @@ export default defineConfig([
   {
     rules: {
       "no-used-vars": "off",
+      "no-unused-vars": "warn"
     }
   }
 ]);
