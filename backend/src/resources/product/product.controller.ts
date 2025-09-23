@@ -11,28 +11,29 @@ const create = async(req: Request, res: Response) => {
   const product = req.body as CreateProductDto
   try{
     if (await findProductByName(product.name)){
-      return res.status(StatusCodes.CONFLICT).json(ReasonPhrases.CONFLICT)
+      return res.status(StatusCodes.CONFLICT).json({ message: ReasonPhrases.CONFLICT })
     }
     const newProduct = await createProduct(product)
     res.status(StatusCodes.CREATED).json(newProduct)
   } catch(err){
     console.error(err)
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR })
   }
 }
 
 const read = (req: Request, res: Response) => {}
 const update = (req: Request, res: Response) => {}
-const remove = (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response) => {
   const {id} = req.params;
   try{
-    if (!id) return res.status(StatusCodes.BAD_REQUEST).json(ReasonPhrases.BAD_REQUEST)
-    const product = removeProduct(id) // TO-DO tem algo de errado? testar
-    res.status(StatusCodes.OK).json(ReasonPhrases.OK)
+    if (!id) return res.status(StatusCodes.BAD_REQUEST).json({ message: ReasonPhrases.BAD_REQUEST })
+    const product = await removeProduct(id)
+    if (!product) return res.status(StatusCodes.NOT_FOUND).json({ message: ReasonPhrases.NOT_FOUND })
+    res.status(StatusCodes.OK).json(product)
   }
   catch(err){
     console.error(err)
-    res.status(StatusCodes.BAD_REQUEST)
+    res.status(StatusCodes.BAD_REQUEST).json({ message: ReasonPhrases.BAD_REQUEST })
   }
 }
 

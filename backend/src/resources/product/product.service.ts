@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 export const getProducts = async () => {
   return prisma.product.findMany({
     where: {
-      status: ProductStatus.deleted,
+      status: ProductStatus.active,
     },
   })
 }

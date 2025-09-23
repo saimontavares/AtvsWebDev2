@@ -5,6 +5,10 @@ import router from './router/router'
 const env = getEnv();
 const app = express();
 
+// Parse JSON and urlencoded bodies so validators/controllers can read req.body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(router);
 
 app.get("/", (req, res) => {
