@@ -8,6 +8,13 @@ import router from "./router/router"
 import createLangCookie from "./middlewares/createLangCookie"
 import { PrismaClient } from "./generated/prisma"
 
+declare module "express-session" {
+  interface SessionData {
+    userType: number;
+    userId: string;
+  }
+}
+
 const env = getEnv()
 const app = express()
 const prisma = new PrismaClient()

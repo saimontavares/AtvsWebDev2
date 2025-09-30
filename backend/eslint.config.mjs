@@ -11,8 +11,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   {
     rules: {
-      "no-used-vars": "off",
-      "no-unused-vars": "warn"
+      "no-unused-vars": "off"
     }
   }
 ]);
