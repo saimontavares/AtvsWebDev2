@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prisma": "docker exec backend-dev npx prisma migrate dev",
+    "prisma": "docker exec backend-dev npx prisma",
     "seed": "docker exec backend-dev npx tsx prisma/seed.ts",
     "start": "nodemon --watch src --exec tsx src/index.ts",
     "build": "tsc",
