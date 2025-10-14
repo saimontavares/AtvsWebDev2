@@ -1,6 +1,11 @@
-function Home() {
-  const mensagem = "Minha loja virtual"
-  return <h1>{mensagem}</h1>
+import ProductList from "@/views/products/list/ProductList"
+import { ProductDto } from "@/views/products/Product.types"
+
+async function Home() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/products`)
+  const products : ProductDto[] = await res.json()
+  console.log(products)
+  return <ProductList products={products} />
 }
 
 export default Home
