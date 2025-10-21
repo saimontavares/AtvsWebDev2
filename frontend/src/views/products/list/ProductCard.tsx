@@ -15,7 +15,7 @@ function ProductCard({ product }: ProductCardProps) {
     const decreaseCart = () => setQtdCart(p => Math.max(p - 1, 0))
     const increaseCart = () => setQtdCart(p => Math.min(p + 1, 100))
     return (
-        <Card href="#" className="max-w-sm">
+        <Card className="max-w-sm">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {product.name}
             </h5>

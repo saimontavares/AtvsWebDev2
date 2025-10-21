@@ -2,7 +2,7 @@ import { Router } from "express";
 import productController from "./product.controller";
 import { productSchema } from "./product.schema";
 import { validate } from "../../middlewares/validate";
-import {checkAuthorization} from "../../middlewares/checkAuthorization";
+import checkAuthorization from "../../middlewares/checkAuthorization";
 
 const router = Router();
 

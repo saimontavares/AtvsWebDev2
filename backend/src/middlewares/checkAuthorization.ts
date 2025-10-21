@@ -7,4 +7,4 @@ const checkAuthorization = (req: Request, res: Response, next: NextFunction) => 
     else res.status(StatusCodes.FORBIDDEN).send(ReasonPhrases.FORBIDDEN);
 }
 
-export {checkAuthorization};
+export default checkAuthorization;
