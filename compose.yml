@@ -6,7 +6,7 @@ services:
       target: development
     restart: always
     ports:
-      - ${PORT_BACKEND}:${PORT_BACKEND}
+      - ${PORT_BACKEND}:6677
     environment:
       - PORT=${PORT_BACKEND}
     volumes:
