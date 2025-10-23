@@ -23,6 +23,10 @@ export const createProduct = async (
   })
 }
 
+export const getProduct = async (id: string) : Promise<Product | null> => {
+  return prisma.product.findFirst({ where: { id } })
+}
+
 export const findProductByName = async (name: string) : Promise<Product | null> => {
   return prisma.product.findFirst({ where: { name } })
 }
@@ -31,4 +35,4 @@ export const removeProduct = async (id: string): Promise<Product> => {
     return prisma.product.delete({
         where: { id }
     })
-} // TO-DO: versão de retorno prof,
+}

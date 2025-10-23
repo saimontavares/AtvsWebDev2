@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createProduct, findProductByName, getProducts, removeProduct } from './product.service';
+import { createProduct, findProductByName, getProduct, getProducts, removeProduct } from './product.service';
 import { CreateProductDto } from './product.types';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
@@ -21,8 +21,14 @@ const create = async(req: Request, res: Response) => {
   }
 }
 
-const read = (req: Request, res: Response) => {}
-const update = (req: Request, res: Response) => {}
+const read = async(req: Request, res: Response) => {
+  const {id} = req.params
+  if(!id) return res.status(StatusCodes.BAD_REQUEST).json(ReasonPhrases.BAD_REQUEST)
+  const products = await getProduct(id);
+  res.json(products);
+}
+
+const update = async (req: Request, res: Response) => {}
 const remove = async (req: Request, res: Response) => {
   const {id} = req.params;
   try{
