@@ -1,15 +1,31 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import ProductCard from './ProductCard'
 import { ProductDto } from '../Product.types'
+import { TextInput } from 'flowbite-react'
 
 interface ProductListProps {
     products: ProductDto[]
 }
 
 function ProductList({ products }: ProductListProps){
+    const [searchString, setSearchString] = useState('')
+    const [filteredProducts, setFilteredProducts] = useState(products)
+    useEffect(() => {
+        setFilteredProducts(products.filter((p) => p.name.toLowerCase().includes(searchString.trim().toLowerCase())))
+    },[searchString, products])
+    useEffect(() => {
+        console.log(filteredProducts)
+    },[filteredProducts])
     return (
+        <div>
+            <div className='flex justify-between mb-2 items-center'>
+                <h1 className='text-2xl font-bold'>Lista de Produtos</h1>
+                <TextInput type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Busque Produtos" />
+            </div>
         <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4' >
-            {products.map(p => <ProductCard key={p.id} product={p} />)}
+            {filteredProducts.map(p => <ProductCard key={p.id} product={p} />)}
+        </div>
         </div>
     )
 }
