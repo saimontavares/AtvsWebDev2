@@ -61,9 +61,10 @@ function ProductCreate() {
             setDescription('')
             // navegar para lista
             router.push('/')
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err)
-            setError(err?.message || 'Erro desconhecido ao tentar criar o produto')
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(msg || 'Erro desconhecido ao tentar criar o produto')
         } finally {
             setLoading(false)
         }
@@ -72,14 +73,18 @@ function ProductCreate() {
     return (
         <>
             <h1 className='text-2xl font-bold'>Criação de produto</h1>
-            <form method='POST'>
+            <form method='POST' onSubmit={handleSubmit}>
                 <TextInput name='name' label='Nome' value={name} onChange={setName} required/>
                 <NumberInput name='price' label='Preço' value={Number(price)} onChange={(n) => setPrice(n.toFixed(2))} required/>
                 <NumberInput name='stock' label='Estoque' value={stock} onChange={setStock} required/>
                 <TextArea name='description' label='Descrição' value={description} onChange={setDescription} rows={4} />
-                <Button type='submit' onClick={handleSubmit} className='mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600'>
-                    Criar Produto
-                </Button>
+                <div className='mt-4'>
+                    <Button type='submit' disabled={loading} className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600'>
+                        {loading ? 'Enviando...' : 'Criar Produto'}
+                    </Button>
+                </div>
+                {error && <div className='text-red-600 mt-2'>{error}</div>}
+                {success && <div className='text-green-600 mt-2'>{success}</div>}
             </form>
         </>
     )
