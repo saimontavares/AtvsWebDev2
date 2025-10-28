@@ -10,3 +10,10 @@ interface ProductDto {
 }
 
 export type { ProductDto };
+
+export interface CreateProductDto {
+    name: string;
+    description: string;
+    price: string;
+    stock: number;
+}
