@@ -17,9 +17,14 @@ function NumberInput({ name, value, label, onChange, placeholder, required }: Nu
             </div>
             <FBTextInput
                 id={name}
-                type='text'
+                type='number'
                 value={value}
-                onChange={(e) => onChange(Number((e.target as HTMLInputElement).value))}
+                onChange={(e) => {
+                    const raw = e.target.value
+                    const parsed = raw === '' ? 0 : parseFloat(raw)
+                    onChange(parsed)
+                }}
+                step="0.01"
                 placeholder={placeholder ?? ''}
                 required={required ?? false}
                 shadow

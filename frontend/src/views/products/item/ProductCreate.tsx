@@ -2,89 +2,70 @@
 
 import TextInput from '@/components/form/TextInput/TextInput'
 import NumberInput from '@/components/form/NumberInput/NumberInput'
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import TextArea from '@/components/form/TextArea/TextArea'
 import { Button } from 'flowbite-react'
 import { CreateProductDto } from '../Product.types'
 import { useRouter } from 'next/navigation'
+import { productSchema } from '../Product.schema'
 
 function ProductCreate() {
     const [name, setName] = useState('')
-    const [price, setPrice] = useState('0.00')
+    const [price, setPrice] = useState(0)
     const [stock, setStock] = useState(0)
     const [description, setDescription] = useState('')
+    const [errors, setErrors] = useState<Record<string, string>>({})
     const router = useRouter()
+    const randomNumber = Math.random()*100
+    const randomNumberRef = useRef<number>(Math.random()*100)
 
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
-    const [success, setSuccess] = useState<string | null>(null)
+    console.log(randomNumberRef.current)
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        setError(null)
-        setSuccess(null)
-
-        const apiBase = process.env.NEXT_PUBLIC_API || process.env.NEXT_PUBLIC_DOCKER_API
-        if (!apiBase) {
-            setError('API base URL não configurada (NEXT_PUBLIC_API ou NEXT_PUBLIC_DOCKER_API).')
-            return
-        }
-
         const product : CreateProductDto = {
             name,
-            price,
+            price: price.toFixed(2),
             stock,
             description,
         }
-
-        setLoading(true)
-        try {
-            const res = await fetch(`${apiBase}/product`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(product),
-            })
-
-            if (!res.ok) {
-                const text = await res.text().catch(() => '')
-                throw new Error(text || `HTTP ${res.status}`)
+        const {error} = productSchema.validate(product)
+        if(error){
+            const errorDetails: Record<string, string> = {}
+            console.log(error.details)
+            for(const errorDetail of error.details){
+                errorDetails[errorDetail.path[0]] = errorDetail.message;
             }
-
-            await res.json()
-            setSuccess('Produto criado com sucesso')
-            // limpar campos
-            setName('')
-            setPrice('0.00')
-            setStock(0)
-            setDescription('')
-            // navegar para lista
-            router.push('/')
-        } catch (err: unknown) {
-            console.error(err)
-            const msg = err instanceof Error ? err.message : String(err)
-            setError(msg || 'Erro desconhecido ao tentar criar o produto')
-        } finally {
-            setLoading(false)
+            setErrors(errorDetails)
+            console.log(errorDetails)
+            return
         }
+        fetch(`${process.env.NEXT_PUBLIC_API}/product`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(product),
+        }).then((res)=>{
+            res.json()
+        }).then(() => {
+            router.push('/')
+        })
     }
 
     return (
         <>
-            <h1 className='text-2xl font-bold'>Criação de produto</h1>
+            <h1 className='text-2xl font-bold mb-2'>Criação de produto</h1>
             <form method='POST' onSubmit={handleSubmit}>
-                <TextInput name='name' label='Nome' value={name} onChange={setName} required/>
-                <NumberInput name='price' label='Preço' value={Number(price)} onChange={(n) => setPrice(n.toFixed(2))} required/>
+                <TextInput name='name' label='Nome' value={name} onChange={setName} error={errors['name']}/>
+                <NumberInput name='price' label='Preço' value={price} onChange={setPrice} required/>
                 <NumberInput name='stock' label='Estoque' value={stock} onChange={setStock} required/>
                 <TextArea name='description' label='Descrição' value={description} onChange={setDescription} rows={4} />
                 <div className='mt-4'>
-                    <Button type='submit' disabled={loading} className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600'>
-                        {loading ? 'Enviando...' : 'Criar Produto'}
+                    <Button type='submit'>
+                        Enviar
                     </Button>
                 </div>
-                {error && <div className='text-red-600 mt-2'>{error}</div>}
-                {success && <div className='text-green-600 mt-2'>{success}</div>}
             </form>
         </>
     )

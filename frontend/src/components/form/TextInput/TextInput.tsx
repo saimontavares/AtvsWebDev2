@@ -1,4 +1,5 @@
-import {TextInput as FBTextInput, Label} from "flowbite-react"
+import {TextInput as FBTextInput, HelperText, Label} from "flowbite-react"
+import { useEffect, useRef } from "react";
 
 interface TextInputProps {
     name: string;
@@ -6,24 +7,33 @@ interface TextInputProps {
     label: string;
     onChange: (s: string) => void;
     placeholder?: string;
-    required?: boolean;
+    focus?: boolean;
+    error?: string;
 }
 
-function TextInput({ name, value, label, onChange, placeholder, required }: TextInputProps) {
+function TextInput({ name, value, label, onChange, placeholder, error, focus }: TextInputProps) {
+    const ref = useRef<HTMLInputElement>(null)
+    useEffect(() => {
+        if (focus) ref.current?.focus()
+    }, [focus])
     return (
         <div>
             <div className="mb-2 block">
-            <Label htmlFor={name}>{label}</Label>
+            <Label htmlFor={name} color={error ? 'failure' : 'gray'}>{label}</Label>
             </div>
             <FBTextInput
+                ref={ref}
                 id={name}
                 type='text'
                 value={value}
-                onChange={(e) => onChange((e.target as HTMLInputElement).value)}
+                onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder ?? ''}
-                required={required ?? false}
                 shadow
+                color={error ? 'failure' : 'gray'}
             />
+            {error && <HelperText color="failure">
+                {error}
+            </HelperText>}
         </div>
     );
 }
