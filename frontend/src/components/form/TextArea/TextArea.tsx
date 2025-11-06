@@ -10,6 +10,7 @@ interface TextAreaProps {
   rows: number;
   focus?: boolean;
   error?: string;
+  required?: boolean;
 }
 
 function TextArea({
@@ -21,6 +22,7 @@ function TextArea({
   rows,
   focus,
   error,
+  required,
 }: TextAreaProps) {
   const ref = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {
@@ -38,7 +40,7 @@ function TextArea({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder ?? ""}
         rows={rows ?? 4}
-        
+        required={required ?? false}
         shadow
       ></FBTextArea>
       {error && <HelperText color="failure">{error}</HelperText>}

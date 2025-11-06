@@ -11,7 +11,7 @@ import { productSchema } from '../Product.schema'
 
 function ProductCreate() {
     const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState("0.00")
     const [stock, setStock] = useState(0)
     const [description, setDescription] = useState('')
     const [errors, setErrors] = useState<Record<string, string>>({})
@@ -25,11 +25,12 @@ function ProductCreate() {
         e.preventDefault()
         const product : CreateProductDto = {
             name,
-            price: price.toFixed(2),
+            price,
             stock,
             description,
         }
-        const {error} = productSchema.validate(product)
+        console.log('Submitting product:', product)
+        const {error} = productSchema.validate(product, { abortEarly: false })
         if(error){
             const errorDetails: Record<string, string> = {}
             console.log(error.details)
@@ -56,16 +57,14 @@ function ProductCreate() {
     return (
         <>
             <h1 className='text-2xl font-bold mb-2'>Criação de produto</h1>
-            <form method='POST' onSubmit={handleSubmit}>
-                <TextInput name='name' label='Nome' value={name} onChange={setName} error={errors['name']}/>
-                <NumberInput name='price' label='Preço' value={price} onChange={setPrice} required/>
-                <NumberInput name='stock' label='Estoque' value={stock} onChange={setStock} required/>
-                <TextArea name='description' label='Descrição' value={description} onChange={setDescription} rows={4} />
-                <div className='mt-4'>
-                    <Button type='submit'>
-                        Enviar
-                    </Button>
-                </div>
+            <form method='POST' onSubmit={handleSubmit} className='flex max-w-md flex-col gap-4'>
+                <TextInput name='name' label='Nome' value={name} onChange={setName} error={errors['name']} focus/>
+                <TextInput name='price' label='Preço' value={price} onChange={setPrice} error={errors['price']} />
+                <NumberInput name='stock' label='Estoque' value={stock} onChange={setStock} error={errors['stock']} />
+                <TextArea name='description' label='Descrição' value={description} onChange={setDescription} rows={4} error={errors['description']} />
+                <Button type='submit'>
+                    Enviar
+                </Button>
             </form>
         </>
     )

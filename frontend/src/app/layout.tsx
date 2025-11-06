@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { NavBar } from "@/components/NavBar/NavBar";
+import { AuthProvider } from "@/providers/AuthProvider/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Minha loja virtual",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavBar />
-        <div className="container mx-auto">{children}</div>
+        <AuthProvider> {/* TODO:colocar o CounterProvider */}
+          <NavBar />
+          <div className="container mx-auto">{children}</div>
+        </AuthProvider>
       </body>
     </html>
   );

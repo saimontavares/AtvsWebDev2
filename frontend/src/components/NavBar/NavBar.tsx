@@ -21,6 +21,7 @@ export function NavBar() {
         <NavbarLink as={Link} href="/product/create">Criar Produto</NavbarLink>
         <NavbarLink href="#">Pricing</NavbarLink>
         <NavbarLink href="#">Contact</NavbarLink>
+        <NavbarLink as={Link} href="/login">Login</NavbarLink>
       </NavbarCollapse>
     </Navbar>
   );

@@ -22,7 +22,11 @@ const login = async(req:Request, res:Response) =>{
         if(!user)return res.status(StatusCodes.UNAUTHORIZED)
         req.session.userType = user.typeId;
         req.session.userId = user.id;
-        res.status(StatusCodes.OK).json(ReasonPhrases.OK)
+        res.status(StatusCodes.OK).json({
+            userId: user.id,
+            userType: user.typeId,
+            userName: user.name
+        })
     } catch(err){
         console.log(err)
         res.json(err)

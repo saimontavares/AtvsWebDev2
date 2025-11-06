@@ -1,4 +1,4 @@
-import {TextInput as FBTextInput, Label} from "flowbite-react"
+import {TextInput as FBTextInput, HelperText, Label} from "flowbite-react"
 
 interface NumberInputProps {
     name: string;
@@ -7,9 +7,10 @@ interface NumberInputProps {
     onChange: (s: number) => void;
     placeholder?: string;
     required?: boolean;
+    error?: string;
 }
 
-function NumberInput({ name, value, label, onChange, placeholder, required }: NumberInputProps) {
+function NumberInput({ name, value, label, onChange, placeholder, required, error }: NumberInputProps) {
     return (
         <div>
             <div className="mb-2 block">
@@ -18,6 +19,7 @@ function NumberInput({ name, value, label, onChange, placeholder, required }: Nu
             <FBTextInput
                 id={name}
                 type='number'
+                color={error ? 'failure' : 'gray'}
                 value={value}
                 onChange={(e) => {
                     const raw = e.target.value
@@ -29,6 +31,9 @@ function NumberInput({ name, value, label, onChange, placeholder, required }: Nu
                 required={required ?? false}
                 shadow
             />
+            {error && <HelperText color="failure">
+                {error}
+            </HelperText>}
         </div>
     );
 }
