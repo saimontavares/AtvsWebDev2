@@ -1,6 +1,7 @@
 "use client"
 
-import {createContext, ReactNode, useState } from  "react";
+import api from "@/utils/api";
+import {createContext, ReactNode, useEffect, useState } from  "react";
 
 interface UserSession {
     userId: string;
@@ -24,27 +25,29 @@ const AuthContext = createContext<IAuthContext>(initialAuthContextData);
 
 function AuthProvider({children}: {children : ReactNode}){
     const [user, setUser] = useState(null);
+    useEffect(() => {
+        api.get('/auth/me').then((res) => {
+            setUser(res.data);
+        }).catch((error) => {
+            setUser(null);
+            console.log(error);
+        })
+    }, []);
     const login = async (email: string, password: string) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/login`, {
-            method: 'POST',
-            body: JSON.stringify({email, password}),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include'
-        });
+        try {
+        const res = await api.post('/auth/login', {email, password});
         if(res.status === 200){
-            const data = await res.json();
-            setUser(data)
+            setUser(res.data)
             return true;
         }
         return false;
+    } catch (error) {
+        console.log(error)
+        return false;
+    }
     }
     const logout = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/logout`, {
-            method: 'POST',
-            credentials: 'include'
-        });
+        const res = await api.post('/auth/logout');
         if(res.status === 200){
             setUser(null);
         }
