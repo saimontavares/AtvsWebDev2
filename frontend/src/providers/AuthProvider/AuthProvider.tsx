@@ -39,7 +39,6 @@ function AuthProvider({children}: {children : ReactNode}){
             return true;
         }
         return false;
-        return false;
     }
     const logout = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/logout`, {
