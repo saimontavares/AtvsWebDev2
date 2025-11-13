@@ -1,13 +1,14 @@
+"use client";
 
 import { AuthContext } from "@/providers/AuthProvider/AuthProvider";
 import { Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle } from "flowbite-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 export function NavBar() {
-  const {user, logout} = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const router = useRouter();
   const handleLogout = async () => {
     await logout();
