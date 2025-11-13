@@ -3,7 +3,7 @@
 import TextInput from '@/components/form/TextInput/TextInput';
 import { AuthContext } from '@/providers/AuthProvider/AuthProvider';
 import { Button } from 'flowbite-react';
-import { useRouter } from 'next/router';
+import { useRouter } from "next/navigation";
 import React, { useContext, useState } from 'react';
 
 function Login() {

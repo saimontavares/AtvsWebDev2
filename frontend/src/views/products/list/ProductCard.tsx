@@ -1,10 +1,12 @@
 "use client"
 
 import { Card } from "flowbite-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import styles from "../Product.module.css"
 import { ProductDto } from "../Product.types";
+
+// useMemo, useCallback
 
 interface ProductCardProps {
     product: ProductDto;
@@ -31,4 +33,4 @@ function ProductCard({ product }: ProductCardProps) {
     )
 }
 
-export default ProductCard;
+export default memo(ProductCard);

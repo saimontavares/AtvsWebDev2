@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import ProductCard from './ProductCard'
 import { ProductDto } from '../Product.types'
 import { TextInput } from 'flowbite-react'
@@ -10,13 +10,13 @@ interface ProductListProps {
 
 function ProductList({ products }: ProductListProps){
     const [searchString, setSearchString] = useState('')
-    const [filteredProducts, setFilteredProducts] = useState(products)
-    useEffect(() => {
-        setFilteredProducts(products.filter((p) => p.name.toLowerCase().includes(searchString.trim().toLowerCase())))
-    },[searchString, products])
-    useEffect(() => {
-        console.log(filteredProducts)
-    },[filteredProducts])
+    const filteredProducts = useMemo(
+        () =>
+            products.filter((p) =>
+                p.name.toLowerCase().includes(searchString.trim().toLowerCase())
+            ),
+        [searchString, products]
+    );
     return (
         <div>
             <div className='flex justify-between mb-2 items-center'>
