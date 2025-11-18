@@ -1,10 +1,12 @@
 "use client"
 
 import { Card } from "flowbite-react";
-import { memo, useState } from "react";
+import { memo, useContext, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import styles from "../Product.module.css"
 import { ProductDto } from "../Product.types";
+import Link from "next/link";
+import { CartContext } from "@/providers/CartProvider/CartProvider";
 
 // useMemo, useCallback
 
@@ -13,13 +15,14 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-    const [qtdCart, setQtdCart] = useState<number>(0)
-    const decreaseCart = () => setQtdCart(p => Math.max(p - 1, 0))
-    const increaseCart = () => setQtdCart(p => Math.min(p + 1, 100))
+    const {cartProducts, inCartProduct, decCartProduct} = useContext(CartContext)
+    const qtdCart = cartProducts[product.id]
+    const decreaseCart = () => decCartProduct(product.id)
+    const increaseCart = () => inCartProduct(product.id)
     return (
-        <Card href={`/product/${product.id}`} className="max-w-sm flex flex-col justify-between h-full">
+        <Card className="max-w-sm flex flex-col justify-between h-full">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {product.name}
+                <Link href={`/product/${product.id}`}>{product.name}</Link>
             </h5>
             <p className="font-normal text-gray-700 dark:text-gray-400">
                 {product.description}
