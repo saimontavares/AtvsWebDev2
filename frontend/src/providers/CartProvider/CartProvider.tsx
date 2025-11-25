@@ -1,6 +1,9 @@
 'use client'
 
-import { createContext, ReactNode, useState } from "react";
+import api from "@/utils/api";
+
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 interface CartContextProvider {
     cartProducts: Record<string, number>;
@@ -16,15 +19,39 @@ const initialCart: CartContextProvider = {
 
 export const CartContext = createContext<CartContextProvider>(initialCart);
 
+
 function CartProvider({children}: {children : ReactNode}) {
+    const user = useContext(AuthContext);
     const [cartProducts, setCartProducts] = useState<Record<string,number>>({});
-    const inCartProduct = (productId: string) => {
+    useEffect(() => {
+        api.get("/purchase/cart").then((res) => {
+            const cart: CartDto = res.data;
+            const cartState: Record<string,number> = {};
+            cart.purchaseItems.forEach((i) => {
+                cartState[i.productId] = i.quantity;
+            });
+            setCartProducts(cartState);
+        })
+    }, [user]);
+    const inCartProduct = async (productId: string) => {
+        try {
+            await api.post("/purchaseItem/inc", {productId});
+        } catch (error) {
+            console.log(error);
+            return;
+        }
         setCartProducts(c => ({
             ...c,
             [productId]: (c[productId] ?? 0) + 1
         }))
     }
-    const decCartProduct = (productId: string) => {
+    const decCartProduct = async (productId: string) => {
+        try {
+            await api.post("/purchaseItem/dec", {productId});
+        } catch (error) {
+            console.log(error);
+            return;
+        }
         if((cartProducts[productId] ?? 0) === 1){
             const copyCartProducts = {...cartProducts}
             delete copyCartProducts[productId]
