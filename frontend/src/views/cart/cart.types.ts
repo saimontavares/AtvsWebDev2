@@ -1,8 +1,10 @@
 export type CartItem = {
 	id: string
+    createdAt: string
+    updatedAt: string
 	purchaseId: string
 	productId: string
-	quantity: SVGAnimatedNumberList
+	quantity: number
 }
 
 export type CartDto = {

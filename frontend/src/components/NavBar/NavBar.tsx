@@ -29,8 +29,7 @@ export function NavBar() {
           About
         </NavbarLink>
         <NavbarLink as={Link} href="/product/create">Criar Produto</NavbarLink>
-        <NavbarLink href="#">Pricing</NavbarLink>
-        <NavbarLink href="#">Contact</NavbarLink>
+        <NavbarLink as={Link} href="/cart">Carrinho</NavbarLink>
         {!user && <NavbarLink as={Link} href="/login">Login</NavbarLink>}
         {user && <NavbarLink as={Link} onClick={handleLogout}>Logout</NavbarLink>}
       </NavbarCollapse>
