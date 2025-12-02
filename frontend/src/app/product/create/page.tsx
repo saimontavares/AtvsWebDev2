@@ -1,5 +1,5 @@
-import ProductCreate from '@/views/products/item/ProductCreate'
+import ProductCreate from "@/views/products/item/ProductCreate";
 
 export default function Page() {
-  return <ProductCreate />
+  return <ProductCreate />;
 }

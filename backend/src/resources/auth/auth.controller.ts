@@ -5,51 +5,50 @@ import { UserTypes } from "../userType/userType.constants"
 import { checkCredentials } from "./auth.service"
 import { ReasonPhrases, StatusCodes } from "http-status-codes"
 
-const signup = async(req:Request, res:Response) =>{
-    const data = req.body as SignUpDto
-    try {
-        const user = await createUser({...data, typeId: UserTypes.client})
-        res.json(user)
-    } catch(err){
-        console.log(err)
-        res.json(err)
-    }
+const signup = async (req: Request, res: Response) => {
+  const data = req.body as SignUpDto
+  try {
+    const user = await createUser({ ...data, typeId: UserTypes.client })
+    res.json(user)
+  } catch (err) {
+    console.log(err)
+    res.json(err)
+  }
 }
-const login = async(req:Request, res:Response) =>{
-    const data = req.body as LoginDto
-    try {
-        const user = await checkCredentials(data)
-        if(!user)return res.status(StatusCodes.UNAUTHORIZED)
-        req.session.userType = user.typeId;
-        req.session.userId = user.id;
-        res.status(StatusCodes.OK).json({
-            userId: user.id,
-            userType: user.typeId,
-            userName: user.name
-        })
-    } catch(err){
-        console.log(err)
-        res.json(err)
-    }
+const login = async (req: Request, res: Response) => {
+  const data = req.body as LoginDto
+  try {
+    const user = await checkCredentials(data)
+    if (!user) return res.status(StatusCodes.UNAUTHORIZED)
+    req.session.userType = user.typeId
+    req.session.userId = user.id
+    res.status(StatusCodes.OK).json({
+      userId: user.id,
+      userType: user.typeId,
+      userName: user.name,
+    })
+  } catch (err) {
+    console.log(err)
+    res.json(err)
+  }
 }
-const logout = async(req:Request, res:Response) =>{
-    delete req.session.userId
-    delete req.session.userType
-    res.status(StatusCodes.OK).json(ReasonPhrases.OK)
-}
-
-const me = async(req:Request, res:Response) => {
-    const user = await getUser(req.session.userId as string);
-    if(user){
-        res.status(StatusCodes.OK).json({
-            userId: user.id,
-            userType: user.typeId,
-            userName: user.name
-        })
-    }
-    else{
-        res.status(StatusCodes.UNAUTHORIZED).json(ReasonPhrases.UNAUTHORIZED);
-    }
+const logout = async (req: Request, res: Response) => {
+  delete req.session.userId
+  delete req.session.userType
+  res.status(StatusCodes.OK).json(ReasonPhrases.OK)
 }
 
-export default {signup, login, logout, me}
+const me = async (req: Request, res: Response) => {
+  const user = await getUser(req.session.userId as string)
+  if (user) {
+    res.status(StatusCodes.OK).json({
+      userId: user.id,
+      userType: user.typeId,
+      userName: user.name,
+    })
+  } else {
+    res.status(StatusCodes.UNAUTHORIZED).json(ReasonPhrases.UNAUTHORIZED)
+  }
+}
+
+export default { signup, login, logout, me }

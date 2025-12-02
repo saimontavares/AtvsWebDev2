@@ -24,10 +24,10 @@ function TextArea({
   error,
   required,
 }: TextAreaProps) {
-  const ref = useRef<HTMLTextAreaElement>(null)
+  const ref = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    if (focus) ref.current?.focus()
-  }, [focus])
+    if (focus) ref.current?.focus();
+  }, [focus]);
   return (
     <div>
       <div className="mb-2 block">

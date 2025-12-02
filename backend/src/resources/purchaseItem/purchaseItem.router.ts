@@ -1,9 +1,9 @@
-import { Router } from "express";
-import purchaseItemController from "./purchaseItem.controller";
+import { Router } from "express"
+import purchaseItemController from "./purchaseItem.controller"
 
-const router = Router();
+const router = Router()
 
-router.post("/inc", purchaseItemController.inc);
-router.post("/dec", purchaseItemController.dec);
+router.post("/inc", purchaseItemController.inc)
+router.post("/dec", purchaseItemController.dec)
 
-export default router;
+export default router

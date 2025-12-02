@@ -1,8 +1,8 @@
-import {Router } from 'express';
-import languageController from './language.controller';
+import { Router } from "express"
+import languageController from "./language.controller"
 
-const router = Router();
+const router = Router()
 
-router.post("/", languageController.change);
+router.get("/change", languageController.changeLangCookie)
 
-export default router;
+export default router

@@ -8,7 +8,9 @@ interface ProductPageProps {
 
 async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
-  const response = await fetch(`${process.env.NEXT_PUBLIC_DOCKER_API}/product/${id}`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_DOCKER_API}/product/${id}`,
+  );
   const product = await response.json();
   return <ProductDetails product={product}></ProductDetails>;
 }

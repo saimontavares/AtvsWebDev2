@@ -1,4 +1,4 @@
 export enum PurchaseStatus {
-    "cart" = 0,
-    "concluded" = 1
+  "cart" = 0,
+  "concluded" = 1,
 }

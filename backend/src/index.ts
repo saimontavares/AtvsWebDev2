@@ -11,8 +11,8 @@ import cors from "cors"
 
 declare module "express-session" {
   interface SessionData {
-    userType: number;
-    userId: string;
+    userType: number
+    userId: string
   }
 }
 
@@ -20,14 +20,15 @@ const env = getEnv()
 const app = express()
 const prisma = new PrismaClient()
 
-// Parse JSON and urlencoded bodies so validators/controllers can read req.body
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(cors({
-  origin: env.FRONTEND_URL,
-  credentials: true
-}))
+app.use(
+  cors({
+    origin: env.FRONTEND_URL,
+    credentials: true,
+  }),
+)
 
 app.use(cookieParser())
 app.use(createLangCookie)

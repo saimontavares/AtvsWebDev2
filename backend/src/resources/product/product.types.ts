@@ -1,3 +1,6 @@
-import { Product } from "../../generated/prisma";
+import { Product } from "../../generated/prisma"
 
-export type CreateProductDto = Pick<Product, "name" | "description" | "stock" | "price">
+export type CreateProductDto = Pick<
+  Product,
+  "name" | "description" | "stock" | "price"
+>
