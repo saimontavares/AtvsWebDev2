@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 
 export const incPurchaseItem = async (userId: string, productId: string) => {
     const cart = await getCart(userId);
-    const purchaseItem = await prisma.purchaseItem.findFirst({
+    let purchaseItem = await prisma.purchaseItem.findFirst({
         where: {
             purchaseId: cart.id,
             productId
         }
     });
     if(!purchaseItem) {
-        await prisma.purchaseItem.create({
+        purchaseItem = await prisma.purchaseItem.create({
             data: {
                 purchaseId: cart.id,
                 productId,
@@ -27,7 +27,7 @@ export const incPurchaseItem = async (userId: string, productId: string) => {
             data: {
                 purchaseId: cart.id,
                 productId,
-                quantity: purchaseItem.quantity + 1
+                quantity: { increment: 1 }
             }
         });
     }
@@ -35,7 +35,7 @@ export const incPurchaseItem = async (userId: string, productId: string) => {
 
 export const decPurchaseitem = async (userId: string, productId: string) => {
     const cart = await getCart(userId);
-    const purchaseItem = await prisma.purchaseItem.findFirst({
+    let purchaseItem = await prisma.purchaseItem.findFirst({
         where: {
             purchaseId: cart.id,
             productId
@@ -57,7 +57,7 @@ export const decPurchaseitem = async (userId: string, productId: string) => {
             data: {
                 purchaseId: cart.id,
                 productId,
-                quantity: purchaseItem.quantity - 1
+                quantity: { decrement: 1 }
             }
         });
     }

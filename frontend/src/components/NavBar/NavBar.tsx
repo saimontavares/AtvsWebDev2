@@ -10,10 +10,12 @@ import { useContext } from "react";
 export function NavBar() {
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
+
   const handleLogout = async () => {
     await logout();
     router.push('/login');
   }
+  
   return (
     <Navbar fluid rounded>
       <NavbarBrand as={Link} href="https://flowbite-react.com">
@@ -31,7 +33,7 @@ export function NavBar() {
         <NavbarLink as={Link} href="/product/create">Criar Produto</NavbarLink>
         <NavbarLink as={Link} href="/cart">Carrinho</NavbarLink>
         {!user && <NavbarLink as={Link} href="/login">Login</NavbarLink>}
-        {user && <NavbarLink as={Link} onClick={handleLogout}>Logout</NavbarLink>}
+        {user && <NavbarLink as={Link} href="#" onClick={handleLogout}>Logout</NavbarLink>}
       </NavbarCollapse>
     </Navbar>
   );

@@ -41,23 +41,43 @@ function ProductCreate() {
             console.log(errorDetails)
             return
         }
-        fetch(`${process.env.NEXT_PUBLIC_API}/product`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(product),
-        }).then((res)=>{
-            res.json()
-        }).then(() => {
-            router.push('/')
-        })
+
+        const apiBase = process.env.NEXT_PUBLIC_API ?? "http://localhost:7788";
+        try {
+            const res = await fetch(`${apiBase}/product`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include', // envia cookies de sessão (HttpOnly)
+                body: JSON.stringify(product),
+            });
+
+            if (res.status === 401) {
+                // sem sessão: redirecionar para login
+                router.push('/login');
+                return;
+            }
+
+            if (!res.ok) {
+                const text = await res.text();
+                // eslint-disable-next-line no-console
+                console.error('Erro na API ao criar produto:', res.status, text);
+                return;
+            }
+
+            await res.json();
+            router.push('/');
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error('Erro ao criar produto:', err);
+        }
     }
 
     return (
         <>
             <h1 className='text-2xl font-bold mb-2'>Criação de produto</h1>
-            <form method='POST' onSubmit={handleSubmit} className='flex max-w-md flex-col gap-4'>
+            <form onSubmit={handleSubmit} className='flex max-w-md flex-col gap-4'>
                 <TextInput name='name' label='Nome' value={name} onChange={setName} error={errors['name']} focus/>
                 <TextInput name='price' label='Preço' value={price} onChange={setPrice} error={errors['price']} />
                 <NumberInput name='stock' label='Estoque' value={stock} onChange={setStock} error={errors['stock']} />

@@ -10,21 +10,21 @@ function Login() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [error, setError] = useState("")
-    const {login} = useContext(AuthContext);
+    const { login } = useContext(AuthContext);
     const router = useRouter();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const ok = await login(email, password);
-        if(ok){
+        if (ok) {
             router.push("/");
-        } else{
+        } else {
             setError("Email e/ou senha incorretos!")
         }
     }
     return (
         <>
             <h1 className='text-2xl font-bold mb-2'>Login de Usuário</h1>
-            <form method='POST' className='flex max-w-md flex-col gap-4' onSubmit={handleSubmit}>
+            <form className='flex max-w-md flex-col gap-4' onSubmit={handleSubmit}>
                 <TextInput name='email' label='Email' value={email} onChange={setEmail} focus error={error} />
                 <TextInput name='password' label='Senha' type='password' value={password} onChange={setPassword} focus error={error} />
                 <Button type='submit'>

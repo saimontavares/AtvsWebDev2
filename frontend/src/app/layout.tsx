@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider> {/* TODO:colocar o CounterProvider */}
+        <AuthProvider>
           <CartProvider>
             <NavBar />
             <div className="container mx-auto">{children}</div>

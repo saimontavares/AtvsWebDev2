@@ -7,9 +7,4 @@ export type CartItem = {
 	quantity: number
 }
 
-export type CartDto = {
-    id: string
-    userId: string
-    status: number
-    purchaseItems: CartItem[]
-}
+export type CartDto = CartItem[];

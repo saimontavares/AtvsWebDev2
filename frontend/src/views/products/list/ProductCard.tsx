@@ -15,10 +15,10 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-    const {cartProducts, inCartProduct, decCartProduct} = useContext(CartContext)
-    const qtdCart = cartProducts[product.id]
+    const {cartProducts, incCartProduct, decCartProduct} = useContext(CartContext)
+    const qtdCart = cartProducts[product.id] ?? 0
     const decreaseCart = () => decCartProduct(product.id)
-    const increaseCart = () => inCartProduct(product.id)
+    const increaseCart = () => incCartProduct(product.id)
     return (
         <Card className="max-w-sm flex flex-col justify-between h-full">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

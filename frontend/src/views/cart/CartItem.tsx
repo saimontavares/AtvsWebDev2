@@ -3,7 +3,7 @@
 import { Card } from "flowbite-react";
 import { memo, useContext, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import styles from "../Cart.module.css"
+import styles from "./Cart.module.css"
 import { ProductDto } from '../../views/products/Product.types'
 import Link from "next/link";
 import { CartContext } from "@/providers/CartProvider/CartProvider";
@@ -15,10 +15,10 @@ interface CartItemProps {
 }
 
 function CartItem({ product }: CartItemProps) {
-    const {cartProducts, inCartProduct, decCartProduct} = useContext(CartContext)
-    const qtdCart = cartProducts[product.id]
+    const {cartProducts, incCartProduct, decCartProduct} = useContext(CartContext)
+    const qtdCart = cartProducts[product.id] ?? 0
     const decreaseCart = () => decCartProduct(product.id)
-    const increaseCart = () => inCartProduct(product.id)
+    const increaseCart = () => incCartProduct(product.id)
     return (
         <Card className="max-w-sm flex flex-col justify-between h-full">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

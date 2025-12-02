@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { LoginDto, SignUpDto } from "./auth.types"
-import { createUser } from "../user/user.service"
+import { createUser, getUser } from "../user/user.service"
 import { UserTypes } from "../userType/userType.constants"
-import { checkCredentials, getUser } from "./auth.service"
+import { checkCredentials } from "./auth.service"
 import { ReasonPhrases, StatusCodes } from "http-status-codes"
 
 const signup = async(req:Request, res:Response) =>{

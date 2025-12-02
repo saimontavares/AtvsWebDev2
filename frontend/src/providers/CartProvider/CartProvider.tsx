@@ -4,45 +4,41 @@ import api from "@/utils/api";
 
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import { CartDto } from "@/views/cart/cart.types";
+import { CartDto, CartItem } from "@/views/cart/cart.types";
 
-interface CartContextProvider {
+interface CartContextProps {
     cartProducts: Record<string, number>;
-    inCartProduct: (productId: string) => void;
+    incCartProduct: (productId: string) => void;
     decCartProduct: (productId: string) => void;
 }
 
-const initialCart: CartContextProvider = {
+const initialCart: CartContextProps = {
     cartProducts: {},
-    inCartProduct: () => { },
-    decCartProduct: () => { }
+    incCartProduct: () => {},
+    decCartProduct: () => {}
 }
 
-export const CartContext = createContext<CartContextProvider>(initialCart);
-
+export const CartContext = createContext<CartContextProps>(initialCart);
 
 function CartProvider({ children }: { children: ReactNode }) {
-    const user = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [cartProducts, setCartProducts] = useState<Record<string, number>>({});
     useEffect(() => {
         if (user) {
             api.get("/purchase/cart").then((res) => {
-                const cart: CartDto = res.data;
-                const cartState: Record<string, number> = {};
-                cart.purchaseItems.forEach((i) => {
+                const cart: CartItem[] = res.data;
+                const cartState: Record<string, number> = {}
+                cart.forEach(i => {
                     cartState[i.productId] = i.quantity;
-                });
+                })
                 setCartProducts(cartState);
-            });
-        } else {
-            const cart = localStorage.getItem("cartProducts");
-            setCartProducts(JSON.parse(cart ?? "{}"));//TODO: revisar isso
+            })
         }
     }, [user]);
     useEffect(() => {
         localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
     }, [cartProducts]);
-    const inCartProduct = async (productId: string) => {
+    const incCartProduct = async (productId: string) => {
         if (user) {
             try {
                 await api.post("/purchaseItem/inc", { productId });
@@ -54,14 +50,17 @@ function CartProvider({ children }: { children: ReactNode }) {
                 ...c,
                 [productId]: (c[productId] ?? 0) + 1
             }))
+            return;
         }
     }
     const decCartProduct = async (productId: string) => {
-        try {
-            await api.post("/purchaseItem/dec", { productId });
-        } catch (error) {
-            console.log(error);
-            return;
+        if (user) {
+            try {
+                await api.post("/purchaseItem/dec", { productId });
+            } catch (error) {
+                console.log(error);
+                return;
+            }
         }
         if ((cartProducts[productId] ?? 0) === 1) {
             const copyCartProducts = { ...cartProducts }
@@ -70,11 +69,11 @@ function CartProvider({ children }: { children: ReactNode }) {
         } else {
             setCartProducts((c) => ({
                 ...c,
-                [productId]: (c[productId] ?? 0) - 1
-            }))
+                [productId]: (c[productId] - 1
+            )}))
         }
     }
-    return <CartContext.Provider value={{ cartProducts, inCartProduct, decCartProduct }}>{children}</CartContext.Provider>
+    return <CartContext.Provider value={{ cartProducts, incCartProduct, decCartProduct }}>{children}</CartContext.Provider>
 };
 
 export default CartProvider;

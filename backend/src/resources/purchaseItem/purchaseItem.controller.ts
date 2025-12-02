@@ -1,31 +1,33 @@
 import { Request, Response } from "express";
 import { IncDto } from "./purchaseItem.types";
 import { decPurchaseitem, incPurchaseItem } from "./purchaseItem.service";
-import { StatusCodes } from "http-status-codes";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
 const inc = async (req: Request, res: Response) => {
     const { productId } = req.body as IncDto;
     const userId = req.session.userId;
-    if(!userId) return res.status(StatusCodes.UNAUTHORIZED).send("Usuário não autenticado");
+    if(!userId) return res.status(StatusCodes.UNAUTHORIZED).json(ReasonPhrases.UNAUTHORIZED);
     try {
         await incPurchaseItem(userId, productId);
-        res.status(StatusCodes.OK).send("O usuário teve o item incrementado com sucesso");
+        res.status(StatusCodes.OK).json(ReasonPhrases.OK);
     }
     catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Erro ao incrementar o item de compra");
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ReasonPhrases.INTERNAL_SERVER_ERROR);
     }
 }
 
 const dec = async (req: Request, res: Response) => {
     const { productId } = req.body as IncDto;
     const userId = req.session.userId;
-    if(!userId) return res.status(StatusCodes.UNAUTHORIZED).send("Usuário não autenticado");
+    if(!userId) return res.status(StatusCodes.UNAUTHORIZED).json(ReasonPhrases.UNAUTHORIZED);
     try {
         await decPurchaseitem(userId, productId);
-        res.status(StatusCodes.OK).send("O usuário teve o item decrementado com sucesso");
+        res.status(StatusCodes.OK).json(ReasonPhrases.OK);
     }
     catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Erro ao decrementar o item de compra");
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ReasonPhrases.INTERNAL_SERVER_ERROR);
     }
 }
 

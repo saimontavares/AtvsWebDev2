@@ -3,7 +3,7 @@ import Login from '@/views/auth/Login'
 
 function LoginPage() {
     return (
-        <Login/>
+        <Login />
     )
 }
 
