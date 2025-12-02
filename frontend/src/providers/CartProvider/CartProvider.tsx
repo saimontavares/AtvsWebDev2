@@ -34,6 +34,10 @@ function CartProvider({ children }: { children: ReactNode }) {
                 setCartProducts(cartState);
             })
         }
+        else{
+            const cart = localStorage.getItem("cartProducts") ?? "{}";
+            setCartProducts(JSON.parse(cart));
+        }
     }, [user]);
     useEffect(() => {
         localStorage.setItem("cartProducts", JSON.stringify(cartProducts));

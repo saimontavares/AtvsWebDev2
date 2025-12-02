@@ -25,7 +25,7 @@ function CartItem({ product }: CartItemProps) {
                 <Link href={`/product/${product.id}`}>{product.name}</Link>
             </h5>
             <p className="font-normal text-gray-700 dark:text-gray-400">
-                {product.price}
+                <b>Preço:</b> {product.price}
             </p>
             <p className="font-normal text-gray-700 dark:text-gray-400">
                 {product.description}

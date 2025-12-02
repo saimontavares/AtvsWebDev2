@@ -32,7 +32,7 @@ function Cart({ products }: CartProps) {
             <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4' >
                 {filteredProducts.map(p => <CartItem key={p.id} product={p} />)}
             </div>
-            <div className='mt-2 text-right'>
+            <div className='mt-2 text-left font-bold'>
                 Total: R$ {total.toFixed(2)}
             </div>
         </div>
