@@ -1,6 +1,7 @@
 "use client";
 
 import { AuthContext } from "@/providers/AuthProvider/AuthProvider";
+import { UserTypes } from "@/constants/userTypes";
 import {
   Navbar,
   NavbarBrand,
@@ -44,9 +45,11 @@ export function NavBar() {
         <NavbarLink as={Link} href="/about">
           About
         </NavbarLink>
-        <NavbarLink as={Link} href="/product/create">
-          Criar Produto
-        </NavbarLink>
+        {user && Number(user.userType) === UserTypes.admin && (
+          <NavbarLink as={Link} href="/product/create">
+            Criar Produto
+          </NavbarLink>
+        )}
         <NavbarLink as={Link} href="/cart">
           Carrinho
         </NavbarLink>
