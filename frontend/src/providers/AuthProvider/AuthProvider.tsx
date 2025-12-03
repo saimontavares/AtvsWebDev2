@@ -80,6 +80,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(res.data);
         try {
           localStorage.setItem("auth_user", JSON.stringify(res.data));
+          
+          // Sincronizar carrinho local com o backend
+          const localCart = localStorage.getItem("cartProducts");
+          if (localCart) {
+            const cartProducts: Record<string, number> = JSON.parse(localCart);
+            // Enviar cada item do carrinho local para o backend
+            for (const [productId, quantity] of Object.entries(cartProducts)) {
+              for (let i = 0; i < quantity; i++) {
+                await api.post("/purchaseItem/inc", { productId });
+              }
+            }
+            // Limpar carrinho local após sincronizar
+            localStorage.removeItem("cartProducts");
+          }
         } catch { }
         return true;
       }

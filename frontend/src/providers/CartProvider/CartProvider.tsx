@@ -55,12 +55,11 @@ function CartProvider({ children }: { children: ReactNode }) {
         console.log(error);
         return;
       }
-      setCartProducts((c) => ({
-        ...c,
-        [productId]: (c[productId] ?? 0) + 1,
-      }));
-      return;
     }
+    setCartProducts((c) => ({
+      ...c,
+      [productId]: (c[productId] ?? 0) + 1,
+    }));
   };
   const decCartProduct = async (productId: string) => {
     if (user) {
