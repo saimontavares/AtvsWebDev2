@@ -3,6 +3,7 @@
 import TextInput from "@/components/form/TextInput/TextInput";
 import { AuthContext } from "@/providers/AuthProvider/AuthProvider";
 import { Button } from "flowbite-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 
@@ -44,6 +45,12 @@ function Login() {
         />
         <Button type="submit">Enviar</Button>
       </form>
+      <p className="mt-4 text-sm">
+        Não tem uma conta?{" "}
+        <Link href="/signup" className="text-blue-600 hover:underline">
+          Criar conta
+        </Link>
+      </p>
     </>
   );
 }
