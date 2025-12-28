@@ -1,6 +1,6 @@
 # Loja Virtual - Projeto PW2
 
-Aplicação web de e-commerce desenvolvida com Next.js (frontend) e Express + Prisma (backend). Permite cadastro e login de usuários, listagem de produtos, carrinho de compras persistente (localStorage para visitantes, banco de dados para usuários logados), e gerenciamento de produtos restrito a administradores.
+Aplicação web de e-commerce desenvolvida com React +  Next.js (frontend) e Express + Prisma (backend). Permite cadastro e login de usuários, listagem de produtos, carrinho de compras persistente (localStorage para visitantes, banco de dados para usuários logados), e gerenciamento de produtos restrito a administradores.
 
 ---
 
